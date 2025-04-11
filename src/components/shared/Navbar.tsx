@@ -89,7 +89,7 @@ function Navbar() {
                 >
                   Login
                 </Button>
-                <Button
+                {/* <Button
                   href="/signup"
                   sx={{
                     color: "white",
@@ -100,7 +100,7 @@ function Navbar() {
                   }}
                 >
                   Sign Up
-                </Button>
+                </Button> */}
               </Box>
             )}
             <Menu

@@ -11,8 +11,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import Link from "next/link";
-import { loginAPI, signupAPI } from "@/app/endpoints/auth";
+// import Link from "next/link";
+import { loginAPI } from "@/app/endpoints/auth";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -35,19 +35,23 @@ const AuthForm = ({ isLogin }: TProps) => {
   };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!isLogin) {
-      const error = await signupAPI(data);
-      if (!error) {
-        toast.success("User created successfully");
-        router.push("/");
-      }
-    } else {
-      const error = await loginAPI(data);
-      if (!error) {
-        toast.success("Logged in successfully");
-        router.push("/");
-      }
+    // if (!isLogin) {
+    //   const error = await signupAPI(data);
+    //   console.log(error);
+    //   if (error === null) {
+    //     toast.success("Check your email to verify your account");
+    //     router.push("/login");
+    //   } else {
+    //     toast.error("Something went wrong");
+    //   }
+    // } else {
+    const error = await loginAPI(data);
+    toast.error(error?.message);
+    if (!error) {
+      toast.success("Logged in successfully");
+      router.push("/");
     }
+    // }
   };
   return (
     <React.Fragment>
@@ -56,7 +60,7 @@ const AuthForm = ({ isLogin }: TProps) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          height: "70vh",
         }}
       >
         <Card
@@ -96,7 +100,7 @@ const AuthForm = ({ isLogin }: TProps) => {
                   label="Email*"
                   size="small"
                   type="email"
-                  defaultValue={data.email}
+                  defaultValue={isLogin ? data.email : ""}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleOnchange(e)
                   }
@@ -106,7 +110,7 @@ const AuthForm = ({ isLogin }: TProps) => {
                   label="Password*"
                   size="small"
                   type="password"
-                  defaultValue={data.password}
+                  defaultValue={isLogin ? data.password : ""}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleOnchange(e)
                   }
@@ -134,7 +138,7 @@ const AuthForm = ({ isLogin }: TProps) => {
               pb: 2,
             }}
           >
-            <Typography
+            {/* <Typography
               variant="body2"
               sx={{
                 textAlign: "center",
@@ -155,7 +159,7 @@ const AuthForm = ({ isLogin }: TProps) => {
                   </Link>
                 </>
               )}
-            </Typography>
+            </Typography> */}
           </Box>
         </Card>
       </Box>
