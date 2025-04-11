@@ -13,7 +13,9 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CollectionsOutlinedIcon from "@mui/icons-material/CollectionsOutlined";
+import { createClient } from "@/app/utils/client";
+import { toast } from "sonner";
+import { uploadImage } from "@/sevices/imageServices";
 
 const style = {
   position: "absolute",
@@ -38,34 +40,73 @@ const closeButtonStyle = {
 };
 
 const ImageUploadForm = () => {
+  const supabase = createClient();
+  const [user, setUser] = React.useState<Record<string, unknown> | null>();
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [fieldValues, setFieldValues] = React.useState<{
     title: string;
     tag: string;
-  }>({ title: "", tag: "" });
+    user_id: string;
+  }>({ title: "", tag: "", user_id: user?.id as string });
   const [fileList, setFileList] = React.useState([] as any);
+
+  React.useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      const userInfo = {
+        id: session?.user.id,
+        email: session?.user.email,
+        name: session?.user.user_metadata.name,
+      };
+      setUser(userInfo);
+    });
+  }, [supabase.auth]);
 
   const handleOpen = (open: boolean) => {
     setOpen(open);
+    if (!open) {
+      setLoading(false);
+      setFieldValues({ title: "", tag: "", user_id: user?.id as string });
+      setFileList([]);
+    }
   };
 
   const handleOnChange = (e: any) => {
     setFieldValues({ ...fieldValues, [e.target.name]: e.target.value });
   };
 
-  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChooseImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
-    console.log(files);
-    setLoading(true);
+
     Object.values(files).forEach((file) => {
       setFileList((prev: any) => [...prev, file]);
     });
+  };
+
+  const handleUpload = async () => {
+    console.log(fieldValues);
+    const formData = new FormData();
+    formData.append("data", JSON.stringify(fieldValues));
+
+    for (const file of fileList) {
+      formData.append("files", file);
+    }
+
+    setLoading(true);
+    const res = await uploadImage(formData);
+    if (res.error) {
+      toast.error(res);
+    } else {
+      toast.success("Image Uploaded Successfully");
+    }
+    console.log(res);
+
     setLoading(false);
   };
 
-  console.log(fieldValues, fileList);
+  console.log(fileList);
+
   return (
     <Box>
       <Button
@@ -110,20 +151,12 @@ const ImageUploadForm = () => {
                 id="upload-image-button"
                 multiple
                 type="file"
-                onChange={handleUpload}
+                onChange={handleChooseImage}
                 disabled={loading}
               />
               <label htmlFor="upload-image-button">
                 <Button
                   component="span"
-                  startIcon={
-                    loading ? (
-                      <CircularProgress size={20} color="inherit" />
-                    ) : (
-                      <CollectionsOutlinedIcon />
-                    )
-                  }
-                  disabled={loading}
                   variant="outlined"
                   color="primary"
                   fullWidth
@@ -147,6 +180,7 @@ const ImageUploadForm = () => {
               color="primary"
               fullWidth
               sx={{ px: 3 }}
+              onClick={handleUpload}
             >
               Upload
             </Button>

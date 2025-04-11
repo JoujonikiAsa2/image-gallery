@@ -28,7 +28,7 @@ function Navbar() {
     supabase.auth.onAuthStateChange((event, session) => {
       setUser(!!session?.user);
     });
-  }, []);
+  }, [supabase.auth]);
 
   const handleLogout = async () => {
     await logoutAPI();
