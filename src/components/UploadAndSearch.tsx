@@ -1,14 +1,13 @@
 "use client"
 import {
   Box,
-  Button,
   IconButton,
   InputBase,
   Paper,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
-import UploadIcon from "@mui/icons-material/Upload";
+import ImageUploadForm from "./ImageUploadForm";
 
 const UploadAndSearch = () => {
   return (
@@ -44,22 +43,7 @@ const UploadAndSearch = () => {
             <SearchIcon />
           </IconButton>
         </Paper>
-        <Button
-          sx={{ height: 50 }}
-          component="label"
-          role={undefined}
-          variant="contained"
-          tabIndex={-1}
-          startIcon={<UploadIcon />}
-        >
-          Upload files
-          <input
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={(e) => console.log(e.target.files)}
-          />
-        </Button>
+        <ImageUploadForm/>
     </Box>
   );
 };
