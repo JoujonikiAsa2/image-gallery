@@ -23,8 +23,8 @@ type TProps = {
 const AuthForm = ({ isLogin }: TProps) => {
   const [data, setData] = React.useState<Record<string, unknown>>({
     name: "",
-    email: "",
-    password: "",
+    email: "joujonikiasaroy@gmail.com",
+    password: "111111",
   });
   const router = useRouter();
   const handleOnchange = (e: any) => {
@@ -44,7 +44,7 @@ const AuthForm = ({ isLogin }: TProps) => {
     } else {
       const error = await loginAPI(data);
       if (!error) {
-        toast.error("Logged in successfully");
+        toast.success("Logged in successfully");
         router.push("/");
       }
     }
@@ -96,6 +96,7 @@ const AuthForm = ({ isLogin }: TProps) => {
                   label="Email*"
                   size="small"
                   type="email"
+                  defaultValue={data.email}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleOnchange(e)
                   }
@@ -105,6 +106,7 @@ const AuthForm = ({ isLogin }: TProps) => {
                   label="Password*"
                   size="small"
                   type="password"
+                  defaultValue={data.password}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleOnchange(e)
                   }

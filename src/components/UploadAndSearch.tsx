@@ -44,13 +44,25 @@ const UploadAndSearch = ({ imagesArray }: any) => {
         py: 4,
       }}
     >
-      <Box sx={{ display: "flex", gap: 2, justifyContent: "center", width: "100%"}}>
+      <Box
+        sx={{
+          p: 2,
+          display: "flex",
+          flexDirection: {
+            xs: "column",
+            sm: "row",
+          },
+          gap: 2,
+          justifyContent: "center",
+        }}
+      >
         <Paper
           component="form"
           sx={{
             height: 35,
             display: "flex",
             alignItems: "center",
+            justifyContent: "space-between",
           }}
         >
           <InputBase
@@ -66,9 +78,10 @@ const UploadAndSearch = ({ imagesArray }: any) => {
         </Paper>
         <ImageUploadForm />
       </Box>
-      <Box sx={{ flexGrow: 1, p: 2 }}>
+      <Box sx={{ flexGrow: 1, p: 2, width: "100%" }}>
         <Grid
           spacing={6}
+          width={"100%"}
           container
           sx={{
             "--Grid-borderWidth": "1px",
@@ -85,12 +98,13 @@ const UploadAndSearch = ({ imagesArray }: any) => {
             <Grid
               position={"relative"}
               key={index}
-              maxHeight={170}
+              maxHeight={240}
               size={{
-                xs: 6,
-                sm: 4,
-                md: 2,
-                lg: 2,
+                xs: 12,
+                sm: 6,
+                md: 3,
+                lg: 3,
+                xl: 2,
               }}
             >
               <ImageCard image={image} />

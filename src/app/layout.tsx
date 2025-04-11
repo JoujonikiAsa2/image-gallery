@@ -29,8 +29,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar/>
-        {children}
+        <Navbar />
+        <main className="flex min-h-screen flex-col items-center justify-between lg:py-24">
+          {children}
+        </main>
         <Toaster toastOptions={{ duration: 3000 }} position="top-right" />
       </body>
     </html>

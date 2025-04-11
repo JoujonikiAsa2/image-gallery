@@ -121,6 +121,7 @@ const ImageUploadForm = () => {
           ":hover": {
             transform: "scale(0.95)",
           },
+          width: "100%",
         }}
         onClick={() => handleOpen(true)}
       >
