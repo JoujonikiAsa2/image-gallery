@@ -16,23 +16,24 @@ export const filterImages = async (query: string) => {
     error,
     status,
   } = await supabase
-    .from("characters")
+    .from("images")
     .select("*")
     .or(`title.ilike.%${query}%,tag.ilike.%${query}%`);
 
   return { images, error, status };
 };
 
+export const deleteImage = async (id: number, urlToRemove: string) => {
+  const projectId = id;
 
-export const deleteImages = async (id: string) => {
-  const {
-    data: images,
-    error,
-    status,
-  } = await supabase
-    .from("characters")
-    .delete()
-    .eq('user_id', id)
-
-  return { images, error, status };
+  const { data, error } = await supabase.rpc("remove_url_from_array", {
+    project_id: projectId,
+    url_to_remove: urlToRemove,
+  });
+  if (error) {
+    console.error("Error removing URL:", error);
+  } else {
+    console.log("URL removed successfully:", data);
+  }
+  return { data, error, status };
 };

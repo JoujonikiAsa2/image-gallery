@@ -3,16 +3,20 @@
 import { Box, Modal, Stack, Typography } from "@mui/material";
 import InfoSharpIcon from "@mui/icons-material/InfoSharp";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
+import { deleteImage } from "@/app/endpoints/images";
+import { toast } from "sonner";
 
 export type TProps = {
   url: string;
   title: string;
   tag: string;
-  userId: number;
+  userId: string;
   createdAt: string;
+  id: number;
 };
 
 const style = {
@@ -31,6 +35,18 @@ const ImageCard = ({ image }: { image: TProps }) => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleDelete = async () => {
+    const res = await deleteImage(image.id, image.url);
+    console.log(res);
+    if (res.error == null) {
+      toast.success("Image deleted successfully");
+      window.location.reload();
+    } else {
+      toast.error("Something went wrong");
+    }
+    window.location.reload();
+  };
 
   return (
     <React.Fragment>
@@ -67,6 +83,16 @@ const ImageCard = ({ image }: { image: TProps }) => {
               right: 8,
             }}
           >
+            <DeleteIcon
+              onClick={() => handleDelete()}
+              sx={{
+                ":hover": {
+                  transform: "scale(1.2)",
+                },
+                transition: "transform 0.5s ease-in",
+                cursor: "pointer",
+              }}
+            />
             <CloseIcon
               onClick={handleClose}
               sx={{
@@ -113,7 +139,7 @@ const ChildModal = ({ image }: { image: TProps }) => {
     height: 200,
     bgcolor: "background.paper",
     boxShadow: 24,
-    p:2
+    p: 2,
   };
 
   const handleOpen = () => {
@@ -132,7 +158,7 @@ const ChildModal = ({ image }: { image: TProps }) => {
           bgcolor: "white",
           borderRadius: "50%",
           top: 10,
-          right: 35,
+          right: 70,
           ":hover": {
             transform: "scale(1.2)",
           },
@@ -146,7 +172,7 @@ const ChildModal = ({ image }: { image: TProps }) => {
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...childModalStyle, width: 1000, fontFamily:'roboto' }}>
+        <Box sx={{ ...childModalStyle, width: 1000, fontFamily: "roboto" }}>
           <Stack direction={"column"} spacing={1}>
             <Typography variant="body2" textTransform={"capitalize"}>
               Title: {image.title}
@@ -158,10 +184,20 @@ const ChildModal = ({ image }: { image: TProps }) => {
               User: {image.userId}
             </Typography>
             <Typography variant="body2" textTransform={"capitalize"}>
-              Date: {new Date(image.createdAt).toLocaleDateString()}, {new Date(image.createdAt).toLocaleTimeString()}
+              Date: {new Date(image.createdAt).toLocaleDateString()},{" "}
+              {new Date(image.createdAt).toLocaleTimeString()}
             </Typography>
-            <Typography variant="body2" textTransform={"capitalize"}>
-             URL: <span className="text-blue-500"><Link onCopy={(e) => e.preventDefault()} href={image.url} target="_blank">{image.url}</Link></span>
+            <Typography variant="body2">
+              URL:{" "}
+              <span className="text-blue-500">
+                <Link
+                  onCopy={(e) => e.preventDefault()}
+                  href={image.url}
+                  target="_blank"
+                >
+                  {image.url}
+                </Link>
+              </span>
             </Typography>
           </Stack>
         </Box>

@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { createClient } from "./utils/server";
 import { redirect } from "next/navigation";
 import UploadAndSearch from "@/components/UploadAndSearch";
 import { getAllImages } from "./endpoints/images";
-import ImageCard, { TProps } from "@/components/common/ImageCard";
+import React from "react";
 
 const Home = async () => {
   const supabase = await createClient();
@@ -18,6 +18,7 @@ const Home = async () => {
       tag: item.tag,
       userId: item.user_id,
       createdAt: item.createdAt,
+      id: item.id,
     }))
   );
   console.log(images, newArray);
@@ -28,39 +29,7 @@ const Home = async () => {
 
   return (
     <Box sx={{ width: "100%", height: "100vh" }}>
-      <UploadAndSearch />
-      <Box sx={{ flexGrow: 1, p: 2 }}>
-        <Grid
-          spacing={2}
-          container
-          sx={{
-            "--Grid-borderWidth": "1px",
-            "& > div": {
-              borderTop: "var(--Grid-borderWidth) solid",
-              borderLeft: "var(--Grid-borderWidth) solid",
-              borderRight: "var(--Grid-borderWidth) solid",
-              borderBottom: "var(--Grid-borderWidth) solid",
-              borderColor: "divider",
-            },
-          }}
-        >
-          {newArray?.map((image: TProps, index) => (
-            <Grid
-            position={"relative"}
-              key={index}
-              maxHeight={170}
-              size={{
-                xs: 6,
-                sm: 4,
-                md: 2,
-                lg: 2,
-              }}
-            >
-              <ImageCard image={image} />
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+      <UploadAndSearch imagesArray={newArray}/>
     </Box>
   );
 };

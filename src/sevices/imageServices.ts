@@ -10,13 +10,5 @@ export const uploadImage = async (data: any) => {
   return res.json();
 };
 
-export const getImages = async () => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
-    method: "GET",
-  });
-  if (!res.ok) {
-    return res.statusText;
-  } else {
-    return res.json();
-  }
-};
+
+

@@ -112,14 +112,12 @@ const ImageUploadForm = () => {
 
     setLoading(true);
     const res = await uploadImage(formData);
-    if (res.status === 200) {
+    if (res.data.error == null) {
       toast.success("Image uploaded successfully");
+      window.location.reload();
     } else {
-      console.log(res.error);
-      toast.error(res.statusText);
+      toast.error("Something went wrong");
     }
-    console.log(res);
-
     setLoading(false);
   };
 
