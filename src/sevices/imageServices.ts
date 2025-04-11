@@ -7,6 +7,13 @@ export const uploadImage = async (data: any) => {
     body: data,
   });
 
+  return res.json();
+};
+
+export const getImages = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}`, {
+    method: "GET",
+  });
   if (!res.ok) {
     return res.statusText;
   } else {

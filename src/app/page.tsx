@@ -1,12 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { createClient } from "./utils/server";
 import { redirect } from "next/navigation";
 import UploadAndSearch from "@/components/UploadAndSearch";
+import { getAllImages } from "./endpoints/images";
+import ImageCard, { TProps } from "@/components/common/ImageCard";
 
 const Home = async () => {
   const supabase = await createClient();
   const res = await supabase.auth.getUser();
+  const { images } = await getAllImages();
+
+  const newArray = images?.flatMap((item) =>
+    item.url.map((url: string) => ({
+      url,
+      title: item.title,
+      tag: item.tag,
+      userId: item.user_id,
+    }))
+  );
+  console.log(images, newArray);
 
   if (!res.data.user) {
     redirect("/login");
@@ -30,11 +43,11 @@ const Home = async () => {
             },
           }}
         >
-          {[...Array(6)].map((_, index) => (
+          {newArray?.map((image: TProps, index) => (
             <Grid
-            p={2}
+            position={"relative"}
               key={index}
-              minHeight={360}
+              maxHeight={360}
               size={{
                 xs: 12,
                 sm: 6,
@@ -42,16 +55,7 @@ const Home = async () => {
                 lg: 3,
               }}
             >
-              <Box
-                sx={{
-                  bgcolor: "background.paper",
-                  height:"90%",
-                  p: 2,
-                }}
-              >
-                {index}
-              </Box>
-              <Typography>Tag</Typography>
+              <ImageCard image={image} />
             </Grid>
           ))}
         </Grid>

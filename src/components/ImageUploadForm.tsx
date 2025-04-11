@@ -16,6 +16,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { createClient } from "@/app/utils/client";
 import { toast } from "sonner";
 import { uploadImage } from "@/sevices/imageServices";
+import imageCompression from "browser-image-compression";
 
 const style = {
   position: "absolute",
@@ -47,8 +48,7 @@ const ImageUploadForm = () => {
   const [fieldValues, setFieldValues] = React.useState<{
     title: string;
     tag: string;
-    user_id: string;
-  }>({ title: "", tag: "", user_id: user?.id as string });
+  }>({ title: "", tag: "" });
   const [fileList, setFileList] = React.useState([] as any);
 
   React.useEffect(() => {
@@ -66,7 +66,7 @@ const ImageUploadForm = () => {
     setOpen(open);
     if (!open) {
       setLoading(false);
-      setFieldValues({ title: "", tag: "", user_id: user?.id as string });
+      setFieldValues({ title: "", tag: "" });
       setFileList([]);
     }
   };
@@ -79,7 +79,21 @@ const ImageUploadForm = () => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
 
-    Object.values(files).forEach((file) => {
+    const options = {
+      maxWidthOrHeight: 800,
+      maxSizeMB: 1,
+      useWebWorker: true,
+    };
+
+    const newFiles = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const compressedFile = await imageCompression(file, options);
+      newFiles.push(compressedFile);
+    }
+
+    Object.values(newFiles).forEach((file) => {
       setFileList((prev: any) => [...prev, file]);
     });
   };
@@ -87,7 +101,10 @@ const ImageUploadForm = () => {
   const handleUpload = async () => {
     console.log(fieldValues);
     const formData = new FormData();
-    formData.append("data", JSON.stringify(fieldValues));
+    formData.append(
+      "data",
+      JSON.stringify({ ...fieldValues, user_id: user?.id })
+    );
 
     for (const file of fileList) {
       formData.append("files", file);
@@ -95,10 +112,11 @@ const ImageUploadForm = () => {
 
     setLoading(true);
     const res = await uploadImage(formData);
-    if (res.error) {
-      toast.error(res);
+    if (res.status === 200) {
+      toast.success("Image uploaded successfully");
     } else {
-      toast.success("Image Uploaded Successfully");
+      console.log(res.error);
+      toast.error(res.statusText);
     }
     console.log(res);
 
@@ -139,7 +157,7 @@ const ImageUploadForm = () => {
             />
             <TextField
               name="tag"
-              label="tag"
+              label="Tag"
               size="small"
               fullWidth
               onChange={(e) => handleOnChange(e)}
