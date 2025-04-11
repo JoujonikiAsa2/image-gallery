@@ -37,7 +37,6 @@ const AuthForm = ({ isLogin }: TProps) => {
     e.preventDefault();
     if (!isLogin) {
       const error = await signupAPI(data);
-      console.log(error);
       if (!error) {
         toast.success("User created successfully");
         router.push("/");

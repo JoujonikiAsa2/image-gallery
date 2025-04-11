@@ -12,7 +12,7 @@ const Home = async () => {
   const { images } = await getAllImages();
 
   const newArray = images?.flatMap((item) =>
-    item.url.map((url: string) => ({
+    item?.url?.map((url: string) => ({
       url,
       title: item.title,
       tag: item.tag,
@@ -21,9 +21,8 @@ const Home = async () => {
       id: item.id,
     }))
   );
-  console.log(images, newArray);
 
-  if (!res.data.user) {
+  if (!res?.data?.user) {
     redirect("/login");
   }
 

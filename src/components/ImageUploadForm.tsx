@@ -14,9 +14,9 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { createClient } from "@/app/utils/client";
-import { toast } from "sonner";
-import { uploadImage } from "@/sevices/imageServices";
 import imageCompression from "browser-image-compression";
+import { toast } from "sonner";
+import { createImage } from "@/app/endpoints/images";
 
 const style = {
   position: "absolute",
@@ -99,29 +99,16 @@ const ImageUploadForm = () => {
   };
 
   const handleUpload = async () => {
-    console.log(fieldValues);
-    const formData = new FormData();
-    formData.append(
-      "data",
-      JSON.stringify({ ...fieldValues, user_id: user?.id })
-    );
-
-    for (const file of fileList) {
-      formData.append("files", file);
-    }
+    const formData = {
+      data: { ...fieldValues, user_id: user?.id },
+      files: fileList,
+    };
 
     setLoading(true);
-    const res = await uploadImage(formData);
-    if (res.data.error == null) {
-      toast.success("Image uploaded successfully");
-      window.location.reload();
-    } else {
-      toast.error("Something went wrong");
-    }
-    setLoading(false);
+    await createImage(formData);
+    toast.success("Image uploaded successfully");
+    window.location.reload();
   };
-
-  console.log(fileList);
 
   return (
     <Box>
@@ -129,7 +116,7 @@ const ImageUploadForm = () => {
         variant="contained"
         size="medium"
         sx={{
-          fontFamily: "inherit", 
+          fontFamily: "inherit",
           fontSize: "0.8rem",
           ":hover": {
             transform: "scale(0.95)",

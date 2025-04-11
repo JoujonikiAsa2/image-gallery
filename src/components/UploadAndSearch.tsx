@@ -19,7 +19,6 @@ const UploadAndSearch = ({ imagesArray }: any) => {
   const handleSearchSubmit = async (event: any) => {
     event.preventDefault();
     const res = await filterImages(searchQuery as string);
-    console.log(res);
     const newImagesArray = res?.images?.flatMap((item) =>
       item.url.map((url: string) => ({
         url,
@@ -69,7 +68,7 @@ const UploadAndSearch = ({ imagesArray }: any) => {
       </Box>
       <Box sx={{ flexGrow: 1, p: 2 }}>
         <Grid
-          spacing={2}
+          spacing={6}
           container
           sx={{
             "--Grid-borderWidth": "1px",

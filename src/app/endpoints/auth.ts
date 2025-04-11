@@ -6,14 +6,12 @@ const supabase = createClient();
 export const signupAPI = async (data: any) => {
   try {
     const res = await supabase.auth.signUp(data);
-    console.log(res);
     if (!res.error) {
       const isAdded = await supabase.from("user").insert({
         id: res?.data?.user?.id,
         name: data.name,
         email: data.email,
       });
-      console.log(isAdded);
       return isAdded.error;
     }
   } catch (err) {
@@ -26,7 +24,6 @@ export const loginAPI = async (data: any) => {
     email: data.email,
     password: data.password,
   });
-  console.log(res);
   return res.error;
 };
 

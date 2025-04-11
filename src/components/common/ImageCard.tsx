@@ -38,7 +38,6 @@ const ImageCard = ({ image }: { image: TProps }) => {
 
   const handleDelete = async () => {
     const res = await deleteImage(image.id, image.url);
-    console.log(res);
     if (res.error == null) {
       toast.success("Image deleted successfully");
       window.location.reload();
@@ -55,7 +54,7 @@ const ImageCard = ({ image }: { image: TProps }) => {
         alt={image.title}
         width={400}
         height={160}
-        className="h-full w-full object-contain cursor-pointer"
+        className="h-full w-full object-cover cursor-pointer"
         onClick={handleOpen}
       />
       <Modal
@@ -118,8 +117,8 @@ const ImageCard = ({ image }: { image: TProps }) => {
           fontWeight: "bold",
         }}
       >
-        {image.url.split("/")[image.url.split("/").length - 1].slice(0, 40)}
-        {image.url.split("/")[image.url.split("/").length - 1].length > 40
+        {image?.url?.split("/")[image?.url?.split("/").length - 1].slice(0, 40)}
+        {image?.url?.split("/")[image?.url?.split("/").length - 1].length > 40
           ? "..."
           : ""}
       </Typography>
