@@ -1,11 +1,5 @@
-"use client"
-import {
-  Box,
-  IconButton,
-  InputBase,
-  Paper,
-} from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+"use client";
+import { Box, IconButton, InputBase, Paper } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import ImageUploadForm from "./ImageUploadForm";
 
@@ -18,32 +12,27 @@ const UploadAndSearch = () => {
         alignItems: "center",
         gap: 2,
         width: "100%",
-        height: "20vh",
+        py: 4,
       }}
     >
-        <Paper
-          component="form"
-          sx={{
-            p: "2px 2px",
-            display: "flex",
-            alignItems: "center",
-            width: 400,
-            height: 50,
-          }}
-        >
-          <IconButton sx={{ p: "10px" }} aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <InputBase
-            sx={{ ml: 1, flex: 1 }}
-            placeholder="Search Google Maps"
-            inputProps={{ "aria-label": "search google maps" }}
-          />
-          <IconButton type="button" sx={{ p: "10px" }} aria-label="search">
-            <SearchIcon />
-          </IconButton>
-        </Paper>
-        <ImageUploadForm/>
+      <Paper
+        component="form"
+        sx={{
+        height: 35,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <IconButton type="button" aria-label="search">
+          <SearchIcon />
+        </IconButton>
+        <InputBase
+          size="small"
+          placeholder="Search image"
+          inputProps={{ "aria-label": "search image" }}
+        />
+      </Paper>
+      <ImageUploadForm />
     </Box>
   );
 };

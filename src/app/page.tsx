@@ -17,6 +17,7 @@ const Home = async () => {
       title: item.title,
       tag: item.tag,
       userId: item.user_id,
+      createdAt: item.createdAt,
     }))
   );
   console.log(images, newArray);
@@ -47,12 +48,12 @@ const Home = async () => {
             <Grid
             position={"relative"}
               key={index}
-              maxHeight={360}
+              maxHeight={170}
               size={{
-                xs: 12,
-                sm: 6,
-                md: 4,
-                lg: 3,
+                xs: 6,
+                sm: 4,
+                md: 2,
+                lg: 2,
               }}
             >
               <ImageCard image={image} />

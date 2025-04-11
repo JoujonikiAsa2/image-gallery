@@ -6,9 +6,8 @@ const nextConfig: NextConfig = {
     domains: ["pkltjdrdleblhlkraoxw.supabase.co"],
   },
   experimental: {
-
     serverActions: {
-      bodySizeLimit: '200mb',
+      bodySizeLimit: "200mb",
     },
   },
 };

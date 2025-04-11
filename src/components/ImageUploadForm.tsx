@@ -129,7 +129,14 @@ const ImageUploadForm = () => {
     <Box>
       <Button
         variant="contained"
-        sx={{ height: 50 }}
+        size="medium"
+        sx={{
+          fontFamily: "inherit", 
+          fontSize: "0.8rem",
+          ":hover": {
+            transform: "scale(0.95)",
+          },
+        }}
         onClick={() => handleOpen(true)}
       >
         Upload Image
