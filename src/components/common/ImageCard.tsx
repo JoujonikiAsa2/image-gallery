@@ -24,8 +24,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 900,
-  height: 900,
+
+  maxWidth: 900,
+  maxHeight: 900,
   bgcolor: "background.paper",
   boxShadow: 24,
   p: 4,
@@ -134,8 +135,8 @@ const ChildModal = ({ image }: { image: TProps }) => {
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    width: 200,
-    height: 200,
+    maxWidth: 300,
+    maxHeight: 300,
     bgcolor: "background.paper",
     boxShadow: 24,
     p: 2,
@@ -174,27 +175,26 @@ const ChildModal = ({ image }: { image: TProps }) => {
         <Box sx={{ ...childModalStyle, width: 1000, fontFamily: "roboto" }}>
           <Stack direction={"column"} spacing={1}>
             <Typography variant="body2" textTransform={"capitalize"}>
-              Title: {image.title}
+              <span className="text-primary font-bold">Title:</span> {image.title}
             </Typography>
             <Typography variant="body2" textTransform={"capitalize"}>
-              Tag: {image.tag}
+              <span className="text-primary font-bold">Tag:</span> {image.tag}
             </Typography>
             <Typography variant="body2" textTransform={"capitalize"}>
-              User: {image.userId}
+              <span className="text-primary font-bold">User:</span> {image.userId}
             </Typography>
             <Typography variant="body2" textTransform={"capitalize"}>
-              Date: {new Date(image.createdAt).toLocaleDateString()},{" "}
+              <span className="text-primary font-bold">Uploaded At:</span> {new Date(image.createdAt).toLocaleDateString()},{" "}
               {new Date(image.createdAt).toLocaleTimeString()}
             </Typography>
             <Typography variant="body2">
-              URL:{" "}
-              <span className="text-blue-500">
+              <span className="text-primary font-bold">URL:</span> <span className="text-blue-500">
                 <Link
                   onCopy={(e) => e.preventDefault()}
                   href={image.url}
                   target="_blank"
                 >
-                  {image.url}
+                  Image url
                 </Link>
               </span>
             </Typography>

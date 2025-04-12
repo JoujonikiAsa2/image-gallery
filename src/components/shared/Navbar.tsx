@@ -44,7 +44,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="static">
       <Container maxWidth="xl" sx={{ py: 1 }}>
         <Toolbar disableGutters>
           <Typography
